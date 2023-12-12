@@ -1,16 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
-public class SoundManager : MonoBehaviour
+public class AmmoManager : MonoBehaviour
 {
-    public static SoundManager Instance { get; set; }
+    public TextMeshProUGUI ammoDisplay;
 
-
-    public AudioSource shootingSoundDesert_Eagle;
-    public AudioSource reloadingSoundDesert_Eagle;
-    public AudioSource emptyMagazineSoundDesert_Eagle;
-
+    public static AmmoManager Instance { get; set; }
 
     private void Awake()
     {

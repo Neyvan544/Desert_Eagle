@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -22,8 +23,11 @@ public class Weapon : MonoBehaviour
     public float bulletPrefabLifeTime = 3f;
 
     public GameObject muzzleEffect;
-
     private Animator animator;
+
+    public float reloadTime;
+    public int magazineSize, bulletsLeft;
+    public bool isReloading;
 
     public enum ShootingMode
     {
@@ -39,10 +43,16 @@ public class Weapon : MonoBehaviour
         readyToShoot = true;
         burstBulletsLeft = bulletsPerBurst;
         animator = GetComponent<Animator>();
+
+        bulletsLeft = magazineSize;
     }
 
     void Update()
     {
+        if(bulletsLeft == 0 && isShooting)
+        {
+            SoundManager.Instance.emptyMagazineSoundDesert_Eagle.Play();
+        }
         if (currentShootingMode == ShootingMode.Auto)
         {
             isShooting = Input.GetKey(KeyCode.Mouse0);
@@ -53,10 +63,25 @@ public class Weapon : MonoBehaviour
             isShooting = Input.GetKey(KeyCode.Mouse0);
         }
 
-        if(readyToShoot && isShooting)
+        if(Input.GetKeyDown(KeyCode.R) && bulletsLeft < magazineSize && !isReloading) 
+        { 
+           Reload();
+        }
+
+        if(readyToShoot && !isShooting && !isReloading && bulletsLeft <= 0) 
+        {
+            Reload();
+        }
+
+        if(readyToShoot && isShooting && bulletsLeft > 0)
         {
             burstBulletsLeft = bulletsPerBurst;
             FireWeapon();
+        }
+        
+        if(AmmoManager.Instance.ammoDisplay != null) 
+        {
+            AmmoManager.Instance.ammoDisplay.text = $"{bulletsLeft/bulletsPerBurst}/{magazineSize/bulletsPerBurst}";
         }
         
     }
@@ -69,6 +94,7 @@ public class Weapon : MonoBehaviour
 
     private void FireWeapon()
     {
+        bulletsLeft--;
         muzzleEffect.GetComponent<ParticleSystem>().Play();
         animator.SetTrigger("Recoil");
 
@@ -96,6 +122,19 @@ public class Weapon : MonoBehaviour
             burstBulletsLeft--;
             Invoke("FireWeapon", shootingDelay);
         }
+    }
+
+    private void Reload()
+    {
+        SoundManager.Instance.reloadingSoundDesert_Eagle.Play();
+        isReloading = true;
+        Invoke("ReloadCompleted", reloadTime);
+    }
+
+    private void ReloadCompleted()
+    {
+        bulletsLeft = magazineSize;
+        isReloading = false;
     }
 
     public Vector3 CalculateDirectionAndSpread()

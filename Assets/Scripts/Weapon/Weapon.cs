@@ -5,6 +5,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 
+
 public class Weapon : MonoBehaviour
 {
 
@@ -28,6 +29,14 @@ public class Weapon : MonoBehaviour
     public float reloadTime;
     public int magazineSize, bulletsLeft;
     public bool isReloading;
+
+    public enum WeaponModel
+    {
+        Desert_Eagle,
+        Deadeye
+    }
+
+    public WeaponModel thisWeaponModel;
 
     public enum ShootingMode
     {
@@ -98,7 +107,8 @@ public class Weapon : MonoBehaviour
         muzzleEffect.GetComponent<ParticleSystem>().Play();
         animator.SetTrigger("Recoil");
 
-        SoundManager.Instance.shootingSoundDesert_Eagle.Play(); 
+         
+        SoundManager.Instance.PlayShootingSound(thisWeaponModel);
 
         readyToShoot = false;
 
@@ -126,7 +136,7 @@ public class Weapon : MonoBehaviour
 
     private void Reload()
     {
-        SoundManager.Instance.reloadingSoundDesert_Eagle.Play();
+        SoundManager.Instance.PlayReloadSound(thisWeaponModel);
         isReloading = true;
         Invoke("ReloadCompleted", reloadTime);
     }

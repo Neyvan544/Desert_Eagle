@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 7444345623785805117}
   - component: {fileID: 6873283999616402974}
   - component: {fileID: 6487389486434178508}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Deadeye
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -191,7 +191,7 @@ GameObject:
   - component: {fileID: 8897294620907798054}
   - component: {fileID: 8820093663577663772}
   - component: {fileID: 8116709910003341908}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: MuzzleFlashEffect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4970,7 +4970,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4042594075026943759}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: BulletSpawn
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7259737429016024425}
   - component: {fileID: 1147027600370126619}
   - component: {fileID: 6999102628094717777}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: MuzzleFlashEffect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4790,7 +4790,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8921611911908017682}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: BulletSpawn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4828,7 +4828,7 @@ GameObject:
   - component: {fileID: 5774691719652474405}
   - component: {fileID: 872687559047762417}
   - component: {fileID: 4977800938512383513}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Desert_Eagle 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}

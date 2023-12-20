@@ -13,6 +13,7 @@ public class HUDManager : MonoBehaviour
     private GameObject rifleWeaponSprite;
     private GameObject pistolAmmoSprite;
     private GameObject rifleAmmoSprite;
+    private GameObject dynamiteSprite;
 
     [Header("Ammo")]
     public TextMeshProUGUI magazineAmmoUI;
@@ -37,10 +38,12 @@ public class HUDManager : MonoBehaviour
 
     private void Awake()
     {
+        Instance = this;
         pistolWeaponSprite = Resources.Load<GameObject>("Desert_Eagle_Weapon");
         rifleWeaponSprite = Resources.Load<GameObject>("Deadeye_Weapon");
         pistolAmmoSprite = Resources.Load<GameObject>("Pistol_Ammo");
         rifleAmmoSprite = Resources.Load<GameObject>("Rifle_Ammo");
+        dynamiteSprite = Resources.Load<GameObject>("Dynamite");
     }
 
     private void Update()
@@ -48,7 +51,7 @@ public class HUDManager : MonoBehaviour
         Weapon activeWeapon = WeaponManager.Instance.activeWeaponSlot.GetComponentInChildren<Weapon>();
         Weapon unActiveWeapon = GetUnActiveWeaponSlot().GetComponentInChildren<Weapon>();
 
-        if(activeWeapon)
+        if (activeWeapon)
         {
             magazineAmmoUI.text = $"{activeWeapon.bulletsLeft / activeWeapon.bulletsPerBurst}";
             totalAmmoUI.text = $"{WeaponManager.Instance.CheckAmmoLeftFor(activeWeapon.thisWeaponModel)}";
@@ -58,11 +61,11 @@ public class HUDManager : MonoBehaviour
 
             activeWeaponUI.sprite = GetWeaponSprite(model);
 
-            if(unActiveWeapon)
+            if (unActiveWeapon)
             {
                 unActiveWeaponUI.sprite = GetWeaponSprite(unActiveWeapon.thisWeaponModel);
             }
-            
+
         }
         else
         {
@@ -74,6 +77,8 @@ public class HUDManager : MonoBehaviour
             activeWeaponUI.sprite = emptySlot;
             unActiveWeaponUI.sprite = emptySlot;
         }
+
+        
     }
 
     private Sprite GetWeaponSprite(Weapon.WeaponModel model)
@@ -106,5 +111,16 @@ public class HUDManager : MonoBehaviour
             }
         }
         return null;
+    }
+
+    internal void UpdateThrowable(Throwable.ThrowableType throwable)
+    {
+        switch (throwable)
+        {
+            case Throwable.ThrowableType.Dynamite:
+                lethalAmountUI.text = $"{WeaponManager.Instance.dynamites}";
+                lethalUI.sprite = dynamiteSprite.GetComponent<SpriteRenderer>().sprite;
+                break;
+        }
     }
 }

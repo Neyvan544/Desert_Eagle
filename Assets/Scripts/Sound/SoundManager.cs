@@ -16,8 +16,10 @@ public class SoundManager : MonoBehaviour
     public AudioSource reloadingSoundDeadeye;
     public AudioSource reloadingSoundDesert_Eagle;
 
-
     public AudioSource emptyMagazineSoundDesert_Eagle;
+
+    public AudioSource throwablesChannel;
+    public AudioClip dynamiteSound;
 
 
     private void Awake()

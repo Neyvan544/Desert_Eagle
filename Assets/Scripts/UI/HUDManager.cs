@@ -14,6 +14,7 @@ public class HUDManager : MonoBehaviour
     private GameObject pistolAmmoSprite;
     private GameObject rifleAmmoSprite;
     private GameObject dynamiteSprite;
+    private GameObject spoiledDynamiteSprite;
 
     [Header("Ammo")]
     public TextMeshProUGUI magazineAmmoUI;
@@ -32,6 +33,7 @@ public class HUDManager : MonoBehaviour
     public TextMeshProUGUI tacticalAmountUI;
 
     public Sprite emptySlot;
+    public Sprite greySlot;
 
 
 
@@ -44,6 +46,7 @@ public class HUDManager : MonoBehaviour
         pistolAmmoSprite = Resources.Load<GameObject>("Pistol_Ammo");
         rifleAmmoSprite = Resources.Load<GameObject>("Rifle_Ammo");
         dynamiteSprite = Resources.Load<GameObject>("Dynamite");
+        spoiledDynamiteSprite = Resources.Load<GameObject>("Spoiled_Dynamite");
     }
 
     private void Update()
@@ -78,7 +81,16 @@ public class HUDManager : MonoBehaviour
             unActiveWeaponUI.sprite = emptySlot;
         }
 
-        
+        if(WeaponManager.Instance.lethalsCount <= 0)
+        {
+            lethalUI.sprite = greySlot;
+        }
+        if (WeaponManager.Instance.tacticalsCount <= 0)
+        {
+            tacticalUI.sprite = greySlot;
+        }
+
+
     }
 
     private Sprite GetWeaponSprite(Weapon.WeaponModel model)
@@ -113,13 +125,22 @@ public class HUDManager : MonoBehaviour
         return null;
     }
 
-    internal void UpdateThrowable(Throwable.ThrowableType throwable)
+    public void UpdateThrowablesUI()
     {
-        switch (throwable)
+        lethalAmountUI.text = $"{WeaponManager.Instance.lethalsCount}";
+        tacticalAmountUI.text = $"{WeaponManager.Instance.tacticalsCount}";
+
+        switch (WeaponManager.Instance.equippedLethalType)
         {
             case Throwable.ThrowableType.Dynamite:
-                lethalAmountUI.text = $"{WeaponManager.Instance.dynamites}";
                 lethalUI.sprite = dynamiteSprite.GetComponent<SpriteRenderer>().sprite;
+                break;
+        }
+
+        switch (WeaponManager.Instance.equippedTacticalType)
+        {
+            case Throwable.ThrowableType.Spoiled_Dynamite:
+                tacticalUI.sprite = spoiledDynamiteSprite.GetComponent<SpriteRenderer>().sprite;
                 break;
         }
     }

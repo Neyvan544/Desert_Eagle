@@ -16,7 +16,9 @@ public class Throwable : MonoBehaviour
 
     public enum ThrowableType
     {
-        Dynamite
+        None,
+        Dynamite,
+        Spoiled_Dynamite
     }
 
     public ThrowableType throwableType;
@@ -53,6 +55,29 @@ public class Throwable : MonoBehaviour
             case ThrowableType.Dynamite:
                 DynamiteEffect();
                 break;
+            case ThrowableType.Spoiled_Dynamite:
+                SpoiledDynamiteEffect();
+                break;
+        }
+    }
+
+    private void SpoiledDynamiteEffect()
+    {
+        GameObject smokeEffect = GlobalReferences.Instance.spoiledDynamiteSmokeEffect;
+        Instantiate(smokeEffect, transform.position, transform.rotation);
+
+        SoundManager.Instance.throwablesChannel.PlayOneShot(SoundManager.Instance.dynamiteSound);
+
+
+        Collider[] colliders = Physics.OverlapSphere(transform.position, damageRadius);
+
+        foreach (Collider objectInRange in colliders)
+        {
+            Rigidbody rb = objectInRange.GetComponent<Rigidbody>();
+            if (rb != null)
+            {
+                
+            }
         }
     }
 
@@ -60,6 +85,8 @@ public class Throwable : MonoBehaviour
     {
         GameObject explosionEffect = GlobalReferences.Instance.dynamiteExplosionEffect;
         Instantiate(explosionEffect, transform.position, transform.rotation);
+
+        SoundManager.Instance.throwablesChannel.PlayOneShot(SoundManager.Instance.dynamiteSound);
 
 
         Collider[] colliders = Physics.OverlapSphere(transform.position, damageRadius);

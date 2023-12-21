@@ -8,6 +8,7 @@ public class GlobalReferences : MonoBehaviour
 
     public GameObject bulletImpactEffectPrefab;
     public GameObject dynamiteExplosionEffect;
+    public GameObject spoiledDynamiteSmokeEffect;
 
     private void Awake()
     {

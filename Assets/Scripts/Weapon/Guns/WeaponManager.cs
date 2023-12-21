@@ -17,16 +17,27 @@ public class WeaponManager : MonoBehaviour
     public int totalRifleAmmo = 0;
     public int totalPistolAmmo = 0;
 
-    [Header("Throwable")]
-    public int dynamites = 0;
+    [Header("Throwables General")]
     public float throwForce = 10f;
-    public GameObject dynamitePrefab;
     public GameObject throwableSpawn;
     public float forceMultiplier = 0;
     public float forceMultiplierLimit = 2f;
 
-        private void Awake()
+    [Header("Lethals")]
+    public int maxLethals = 2;
+    public int lethalsCount = 0;
+    public Throwable.ThrowableType equippedLethalType;
+    public GameObject dynamitePrefab;
+
+    [Header("Tacticals")]
+    public int maxTacticals = 2;
+    public int tacticalsCount = 0;
+    public Throwable.ThrowableType equippedTacticalType;
+    public GameObject spoiledDynamitePrefab;
+
+    private void Awake()
         {
+        Instance = this;
             if (Instance != null && Instance != this)
             {
                 Destroy(gameObject);
@@ -40,6 +51,9 @@ public class WeaponManager : MonoBehaviour
     private void Start()
     {
         activeWeaponSlot = weaponSlots[0];
+
+        equippedLethalType = Throwable.ThrowableType.None;
+        equippedTacticalType = Throwable.ThrowableType.None;
     }
 
     public void Update()
@@ -65,7 +79,7 @@ public class WeaponManager : MonoBehaviour
             SwitchActiveSlot(1);
         }
 
-        if (Input.GetKey(KeyCode.G))
+        if (Input.GetKey(KeyCode.G) || Input.GetKey(KeyCode.T))
         {
             forceMultiplier += Time.deltaTime;
 
@@ -77,9 +91,18 @@ public class WeaponManager : MonoBehaviour
 
         if(Input.GetKeyUp(KeyCode.G))
         {
-            if(dynamites > 0)
+            if(lethalsCount > 0)
             {
                 ThrowLethal();
+            }
+            forceMultiplier = 0;
+        }
+
+        if (Input.GetKeyUp(KeyCode.T))
+        {
+            if (tacticalsCount > 0)
+            {
+                ThrowTactical();
             }
             forceMultiplier = 0;
         }
@@ -196,20 +219,65 @@ public class WeaponManager : MonoBehaviour
         switch (throwable.throwableType)
         {
            case Throwable.ThrowableType.Dynamite:
-                PickupDynamite();
+                PickupThrowableAsLethal(Throwable.ThrowableType.Dynamite);
+                break;
+            case Throwable.ThrowableType.Spoiled_Dynamite:
+                PickupThrowableAsTactical(Throwable.ThrowableType.Spoiled_Dynamite);
                 break;
         }
     }
 
-    private void PickupDynamite()
+    private void PickupThrowableAsTactical(Throwable.ThrowableType tactical)
     {
-        dynamites += 1;
-        HUDManager.Instance.UpdateThrowable(Throwable.ThrowableType.Dynamite);
+        if (equippedTacticalType == tactical || equippedTacticalType == Throwable.ThrowableType.None)
+        {
+            equippedTacticalType = tactical;
+
+            if (tacticalsCount < maxTacticals)
+            {
+                tacticalsCount += 1;
+                Destroy(InteractionManager.Instance.hoveredThrowable.gameObject);
+                HUDManager.Instance.UpdateThrowablesUI();
+            }
+            else
+            {
+                print("Tactical limit reached");
+            }
+        }
+        else
+        {
+
+        }
     }
+
+    private void PickupThrowableAsLethal(Throwable.ThrowableType lethal)
+    {
+        if(equippedLethalType == lethal || equippedLethalType == Throwable.ThrowableType.None)
+        {
+            equippedLethalType = lethal;
+
+            if(lethalsCount < maxLethals)
+            {
+                lethalsCount += 1;
+                Destroy(InteractionManager.Instance.hoveredThrowable.gameObject);
+                HUDManager.Instance.UpdateThrowablesUI();
+            }
+            else
+            {
+                print("Lethals limit reached");
+            }
+        }
+        else
+        {
+
+        }
+    }
+
+ 
 
     private void ThrowLethal()
     {
-       GameObject lethalPrefab = dynamitePrefab;
+       GameObject lethalPrefab = GetThrowablePrefab(equippedLethalType);
 
         GameObject throwable = Instantiate(lethalPrefab, throwableSpawn.transform.position, Camera.main.transform.rotation);
         Rigidbody rb = throwable.GetComponent<Rigidbody>();
@@ -218,8 +286,47 @@ public class WeaponManager : MonoBehaviour
 
         throwable.GetComponent<Throwable>().hasBeenThrown = true;
 
-        dynamites -= 1;
-        HUDManager.Instance.UpdateThrowable(Throwable.ThrowableType.Dynamite);
+        lethalsCount -= 1;
+
+        if(lethalsCount <= 0)
+        {
+            equippedLethalType = Throwable.ThrowableType.None;
+        }
+
+        HUDManager.Instance.UpdateThrowablesUI();
+    }
+
+    private void ThrowTactical()
+    {
+        GameObject tacticalPrefab = GetThrowablePrefab(equippedTacticalType);
+
+        GameObject throwable = Instantiate(tacticalPrefab, throwableSpawn.transform.position, Camera.main.transform.rotation);
+        Rigidbody rb = throwable.GetComponent<Rigidbody>();
+
+        rb.AddForce(Camera.main.transform.forward * (throwForce * forceMultiplier), ForceMode.Impulse);
+
+        throwable.GetComponent<Throwable>().hasBeenThrown = true;
+
+        tacticalsCount -= 1;
+
+        if (tacticalsCount <= 0)
+        {
+            equippedTacticalType = Throwable.ThrowableType.None;
+        }
+
+        HUDManager.Instance.UpdateThrowablesUI();
+    }
+    private GameObject GetThrowablePrefab(Throwable.ThrowableType throwableType)
+    {
+        switch (throwableType)
+        {
+            case Throwable.ThrowableType.Dynamite:
+                return dynamitePrefab;
+            case Throwable.ThrowableType.Spoiled_Dynamite:
+                return spoiledDynamitePrefab;
+        }
+        return new();
+
     }
     #endregion
 }

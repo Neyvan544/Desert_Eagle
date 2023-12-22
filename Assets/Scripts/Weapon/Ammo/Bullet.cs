@@ -20,10 +20,10 @@ public class Bullet : MonoBehaviour
             CreateBulletImpactEffect(objectWeHit);
             Destroy(gameObject);
         }
-        if (objectWeHit.gameObject.CompareTag("Zombie"))
+        if (objectWeHit.gameObject.CompareTag("Enemy"))
         {
-            print("hit a zombie");
-            objectWeHit.gameObject.GetComponent<Zombie>().TakeDamage(bulletDamage);
+            print("hit a enemy");
+            objectWeHit.gameObject.GetComponent<Enemy>().TakeDamage(bulletDamage);
             Destroy(gameObject);
         }
     }

@@ -9,6 +9,7 @@ public class GlobalReferences : MonoBehaviour
     public GameObject bulletImpactEffectPrefab;
     public GameObject dynamiteExplosionEffect;
     public GameObject spoiledDynamiteSmokeEffect;
+    public GameObject bloodSprayEffect;
 
     private void Awake()
     {

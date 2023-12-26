@@ -33,10 +33,15 @@ public class InteractionManager : MonoBehaviour
 
                 if (objectHitByRaycast.GetComponent<Weapon>() && objectHitByRaycast.GetComponent<Weapon>().isActiveWeapon == false)
                 {
+                   
+                    if(hoveredWeapon)
+                    {
+                    hoveredWeapon.GetComponent<Outline>().enabled = false;
+                    }
                     hoveredWeapon = objectHitByRaycast.gameObject.GetComponent<Weapon>();
                     hoveredWeapon.GetComponent<Outline>().enabled = true;
 
-                if(Input.GetKeyDown(KeyCode.F))
+                    if(Input.GetKeyDown(KeyCode.F))
                      {
                     WeaponManager.Instance.PickUpWeapon(objectHitByRaycast.gameObject);
                      }
@@ -53,7 +58,13 @@ public class InteractionManager : MonoBehaviour
 
                 if (objectHitByRaycast.GetComponent<AmmoBox>())
                 {
-                     hoveredAmmoBox = objectHitByRaycast.gameObject.GetComponent<AmmoBox>();
+
+
+                    if (hoveredAmmoBox)
+                    {
+                    hoveredAmmoBox.GetComponent<Outline>().enabled = false;
+                    }
+                hoveredAmmoBox = objectHitByRaycast.gameObject.GetComponent<AmmoBox>();
                      hoveredAmmoBox.GetComponent<Outline>().enabled = true;
 
                 if (Input.GetKeyDown(KeyCode.F))
@@ -74,6 +85,12 @@ public class InteractionManager : MonoBehaviour
 
                 if (objectHitByRaycast.GetComponent<Throwable>())
                 {
+
+
+                if (hoveredThrowable)
+                {
+                    hoveredThrowable.GetComponent<Outline>().enabled = false;
+                }
                 hoveredThrowable = objectHitByRaycast.gameObject.GetComponent<Throwable>();
                 hoveredThrowable.GetComponent<Outline>().enabled = true;
 

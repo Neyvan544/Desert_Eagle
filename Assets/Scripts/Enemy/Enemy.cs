@@ -57,12 +57,14 @@ public class Enemy : MonoBehaviour
 
         #region Detection
         Gizmos.color = Color.blue;
-        Gizmos.DrawWireSphere(transform.position, 18f);
+        Gizmos.DrawWireSphere(transform.position, 200f);
         #endregion
 
         #region Stop Chasing
         Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(transform.position, 21f);
+        Gizmos.DrawWireSphere(transform.position, 201f);
         #endregion
     }
+
+
 }

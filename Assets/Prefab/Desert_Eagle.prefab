@@ -4935,7 +4935,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isActiveWeapon: 0
-  weaponDamage: 20
+  weaponDamage: 35
   isShooting: 0
   readyToShoot: 0
   shootingDelay: 1
@@ -4950,7 +4950,7 @@ MonoBehaviour:
   bulletPrefabLifeTime: 3
   muzzleEffect: {fileID: 4597468482140018575}
   reloadTime: 1.5
-  magazineSize: 7
+  magazineSize: 9
   bulletsLeft: 0
   isReloading: 0
   spawnPosition: {x: 0.164, y: 0.883, z: 0.9}

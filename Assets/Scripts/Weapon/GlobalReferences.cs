@@ -10,6 +10,7 @@ public class GlobalReferences : MonoBehaviour
     public GameObject dynamiteExplosionEffect;
     public GameObject spoiledDynamiteSmokeEffect;
     public GameObject bloodSprayEffect;
+    public int waveNumber;
 
     private void Awake()
     {
